@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>se.sigma.sallinggroup.steptomongodb</groupId>
+    <artifactId>steptomongodb-solution</artifactId>
+    <packaging>pom</packaging>
+    <version>200526</version>
+    <modules>
+        <module>mongo-client</module>
+        <module>webapp</module>
+        <module>steptomongodb</module>
+        <module>pojo</module>
+    </modules>
+    <properties>
+        <version>200526</version>
+    </properties>
+</project>

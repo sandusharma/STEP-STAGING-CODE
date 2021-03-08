@@ -1,0 +1,21 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="dbManager" class = "se.sigma.sallinggroup.managers.MongoDbManager">
+        <constructor-arg name="url" value="mongodb://fgn:password000@cluster0-shard-00-00-r1sx3.mongodb.net:27017,cluster0-shard-00-01-r1sx3.mongodb.net:27017,cluster0-shard-00-02-r1sx3.mongodb.net:27017/test?ssl=true&amp;replicaSet=Cluster0-shard-0&amp;authSource=admin&amp;retryWrites=true" />
+        <constructor-arg name="username" value="" />
+        <constructor-arg name="password" value="" />
+        <constructor-arg name="productCollection" value="products_da" />
+        <constructor-arg name="classificationCollection" value="classifications_da" />
+    </bean>
+
+    <bean id="settings" class="se.sigma.sallinggroup.Settings">
+        <property name="tempPathForStepXmlFiles" value="c:\temp\stepxml" />
+        <property name="hotfolderPathProducts" value="" />
+        <property name="hotfolderPathClassifications" value="" />
+    </bean>
+
+</beans>

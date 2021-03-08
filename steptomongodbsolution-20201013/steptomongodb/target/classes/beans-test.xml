@@ -1,0 +1,86 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+
+    <bean id="dbManager" class = "se.sigma.sallinggroup.managers.MongoDbManager">
+        <constructor-arg name="url" value="mongodb://fgn:password000@cluster0-shard-00-00-r1sx3.mongodb.net:27017,cluster0-shard-00-01-r1sx3.mongodb.net:27017,cluster0-shard-00-02-r1sx3.mongodb.net:27017/test?ssl=true&amp;replicaSet=Cluster0-shard-0&amp;authSource=admin&amp;retryWrites=true" />
+        <constructor-arg name="username" value="" />
+        <constructor-arg name="password" value="" />
+        <constructor-arg name="productCollection" value="products_da" />
+        <constructor-arg name="classificationCollection" value="classifications_da" />
+        <constructor-arg name="database" value="steptest" />
+    </bean>
+
+
+    <bean id="dbManagerY" class = "se.sigma.sallinggroup.managers.RestDbManager">
+        <constructor-arg name="url" value="http://mongodbproxy-env.g6au7jykdt.eu-central-1.elasticbeanstalk.com" />
+        <constructor-arg name="apiKey" value="i4827askadsf32AK-askkKEWRQqerw" />
+    </bean>
+
+
+    <bean id="jmsConnectionFactory" class="com.rabbitmq.jms.admin.RMQConnectionFactory" >
+        <property name="username" value="clientuser000" />
+        <property name="password" value="fwBKd6YlK0" />
+        <property name="virtualHost" value="/" />
+        <property name="host" value="31.192.227.148" />
+        <property name="port" value="5672" />
+    </bean>
+
+
+    <bean id="stepProductsQueueManager" class="se.sigma.sallinggroup.managers.JMSQueueManager" >
+        <constructor-arg name="queue" value="stepproducts" />
+        <constructor-arg name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+    <bean id="stepClassificationsQueueManager" class="se.sigma.sallinggroup.managers.JMSQueueManager" >
+        <constructor-arg name="queue" value="stepclassifications" />
+        <constructor-arg name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+    <bean id="jmsTopicManager" class="se.sigma.sallinggroup.managers.JMSTopicManager" >
+        <constructor-arg name="topics">
+            <list>
+                <value>PIM_Articles</value>
+                <value>PIM_Classifications</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+    <bean id="rabbitMqTopicManager" class="se.sigma.sallinggroup.managers.RabbitMQTopicManager" >
+        <constructor-arg name="connectionFactory" ref="jmsConnectionFactory" />
+        <constructor-arg name="consumerName" value="Bilka Sweden"/>
+    </bean>
+
+    <!-- Filtering criteria-->
+    <bean id="stepToJson" class="se.sigma.sallinggroup.StepToJson">
+        <!-- Specify STEP metadata attribute to filter attribute groups //MetaDataID separated with # and value to include the AttributeGroup e.g. ATTRGRPVALIDFORMONGODB#Yes-->
+        <constructor-arg name="attribute_group_validity_metadata_field" value="" />
+        <!-- PublishedFlag#true -->
+
+        <!-- Specify valid reference types in STEP //Provide reference type ids separated by ";"-->
+        <constructor-arg name="valid_reference_types" value="" />
+
+        <!-- Specify valid classifications in STEP //Provide Classification link type ids separated by ";"-->
+        <constructor-arg name="valid_classification_links" value=""/>
+
+        <!-- Specify valid asset types in STEP //Provide Asset Type ids separated by ";"-->
+        <constructor-arg name="valid_asset_types" value=""/>
+
+        <property name="assetExternalIdAttributeId" value="DAMIdentifier" />
+        <property name="includeAttributeMetadata" value="true" />
+
+        <!-- Specify valid metadata attributes to be available on the attributes ";"-->
+        <property name="valid_metadata_attributes" value="AttributeDisplaySequence" />
+    </bean>
+
+
+    <bean id="settings" class="se.sigma.sallinggroup.Settings">
+        <property name="tempPathForStepXmlFiles" value="c:\temp\stepxml" />
+        <property name="hotfolderPathProducts" value="c:\mongodb\hotfolder" />
+        <property name="hotfolderPathClassifications" value="c:\mongodb\hotfolder_classifications" />
+    </bean>
+
+</beans>
